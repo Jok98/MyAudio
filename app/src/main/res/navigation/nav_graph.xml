@@ -12,7 +12,13 @@
         android:id="@+id/recordFragment"
         android:name="com.example.myaudio.RecordFragment"
         android:label="fragment_record"
-        tools:layout="@layout/fragment_record" />
+        tools:layout="@layout/fragment_record" >
+
+
+        <action
+            android:id="@+id/action_recordFragment_to_audioListFragment"
+            app:destination="@id/audioListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/audioListFragment"
         android:name="com.example.myaudio.AudioListFragment"

@@ -42,7 +42,7 @@
         android:id="@+id/record_button"
         android:layout_width="185dp"
         android:layout_height="130dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="36dp"
         android:src="@drawable/microphone"
         app:layout_constraintEnd_toEndOf="@id/record_timer"
         app:layout_constraintStart_toStartOf="@id/record_timer"
@@ -50,7 +50,6 @@
 
     <ImageView
         android:id="@+id/record_list_btn"
-
         android:layout_width="50dp"
         android:layout_height="65dp"
         android:src="@drawable/menu"
