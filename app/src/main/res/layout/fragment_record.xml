@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/color"
     tools:context=".RecordFragment">
+
+
 
     <ImageView
         android:id="@+id/record_header_image"
@@ -22,7 +25,8 @@
         android:layout_height="wrap_content"
         android:text="Premere il microfo per iniziare a registrare"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/record_header_image"
         app:layout_constraintStart_toStartOf="@id/record_header_image"
         app:layout_constraintTop_toBottomOf="@id/record_header_image" />
@@ -52,7 +56,7 @@
         android:id="@+id/record_list_btn"
         android:layout_width="50dp"
         android:layout_height="65dp"
-        android:src="@drawable/menu"
+        android:src="@android:drawable/ic_menu_sort_by_size"
         app:layout_constraintBottom_toBottomOf="@id/record_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/record_button"
