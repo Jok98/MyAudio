@@ -1,9 +1,12 @@
 package com.example.myaudio;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +26,9 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     private ImageView recordBtn;
 
     private boolean isRecording=false;
+
+    private String recordPermission = Manifest.permission.RECORD_AUDIO;
+
 
     public RecordFragment() {
         // Required empty public constructor
@@ -65,11 +71,23 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
                     isRecording=false;
 
                 }else {
-                    //start recording
-                    recordBtn.setImageDrawable(getResources().getDrawable(R.drawable.microphone2, null));
-                    isRecording=true;
+                    //start recording, 
+                    if(checkPermission()) {
+                        recordBtn.setImageDrawable(getResources().getDrawable(R.drawable.microphone2, null));
+                        isRecording = true;
+                    }
                 }
                 break;
         }
+    }
+    //controllo dei permessi per la registrazione
+    private boolean checkPermission() {
+        if( ActivityCompat.checkSelfPermission(getContext(), recordPermission)== PackageManager.PERMISSION_GRANTED){
+            return true;
+        }else {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{recordPermission}, 10);
+        }
+
+        return false;
     }
 }
