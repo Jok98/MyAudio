@@ -8,11 +8,10 @@
     tools:context=".RecordFragment">
 
 
-
     <ImageView
         android:id="@+id/record_header_image"
-        android:layout_width="291dp"
-        android:layout_height="410dp"
+        android:layout_width="260dp"
+        android:layout_height="361dp"
         android:layout_marginTop="-400dp"
         android:src="@drawable/epicavatar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +22,7 @@
         android:id="@+id/record_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Premere il microfo per iniziare a registrare"
+        android:text="Premere il microfo per iniziare a registrare\n"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"

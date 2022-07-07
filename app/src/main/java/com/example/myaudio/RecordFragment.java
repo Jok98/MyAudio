@@ -12,10 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -31,6 +34,8 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
     private ImageView recordBtn;
 
+    private TextView fileNameDisplay;
+
     private boolean isRecording=false;
 
     private String recordPermission = Manifest.permission.RECORD_AUDIO;
@@ -39,6 +44,7 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
 
     private String recordFile;
 
+    private Chronometer chronometer;
 
     public RecordFragment() {
         // Required empty public constructor
@@ -60,8 +66,10 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
         navController= Navigation.findNavController(view);
         listBtn=view.findViewById(R.id.record_list_btn);
         recordBtn = view.findViewById(R.id.record_button);
-        recordBtn.setOnClickListener(this);
+        chronometer= view.findViewById(R.id.record_timer);
+        fileNameDisplay = view.findViewById(R.id.record_filename);
 
+        recordBtn.setOnClickListener(this);
         listBtn.setOnClickListener(this);
     }
 
@@ -94,10 +102,16 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startRecording()  {
+        //resetta il cronometro
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
+
         String filePath = getActivity().getExternalFilesDir("/").getAbsolutePath();
         SimpleDateFormat dataFormat= new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.ITALY);
         Date now = new Date();
         recordFile = "Rec_"+dataFormat.format(now)+".mp3";
+        fileNameDisplay.setText("Registrazione iniziata, nome file : "+recordFile);
+
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -113,6 +127,8 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     }
 
     private void stopRecording() {
+        chronometer.stop();
+        fileNameDisplay.setText("Registrazione terminata, nome file : "+recordFile);
         mediaRecorder.stop();
         mediaRecorder.release();
         mediaRecorder = null;
