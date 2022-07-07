@@ -2,6 +2,7 @@ package com.example.myaudio;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class RecordFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +34,10 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
     private boolean isRecording=false;
 
     private String recordPermission = Manifest.permission.RECORD_AUDIO;
+
+    private MediaRecorder mediaRecorder;
+
+    private String recordFile;
 
 
     public RecordFragment() {
@@ -67,12 +77,14 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
                 //isRecording=(isRecording==false)?true:false;
                 if (isRecording){
                     //stop recording
+                    stopRecording();
                     recordBtn.setImageDrawable(getResources().getDrawable(R.drawable.microphone, null));
                     isRecording=false;
 
                 }else {
-                    //start recording, 
+                    //start recording,
                     if(checkPermission()) {
+                        startRecording();
                         recordBtn.setImageDrawable(getResources().getDrawable(R.drawable.microphone2, null));
                         isRecording = true;
                     }
@@ -80,6 +92,32 @@ public class RecordFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    private void startRecording()  {
+        String filePath = getActivity().getExternalFilesDir("/").getAbsolutePath();
+        SimpleDateFormat dataFormat= new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.ITALY);
+        Date now = new Date();
+        recordFile = "Rec_"+dataFormat.format(now)+".mp3";
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(filePath+"/"+recordFile);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaRecorder.start();
+
+    }
+
+    private void stopRecording() {
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder = null;
+    }
+
     //controllo dei permessi per la registrazione
     private boolean checkPermission() {
         if( ActivityCompat.checkSelfPermission(getContext(), recordPermission)== PackageManager.PERMISSION_GRANTED){
